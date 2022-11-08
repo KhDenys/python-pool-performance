@@ -1,3 +1,5 @@
+from requests import Session
+
 from requests.adapters import HTTPAdapter
 from collections.abc import Mapping, Sequence
 from types import FunctionType
@@ -5,6 +7,10 @@ from tqdm import tqdm
 import time
 import sys
 import gc
+
+
+class S(Session):
+    pass
 
 
 class PoolTest(object):
@@ -30,8 +36,7 @@ class PoolTest(object):
         return sqrt
 
     def init_network_resource(self) -> object:
-        import requests
-        return requests.Session
+        return S
 
     @staticmethod
     def do_compute_work(args) -> None:
@@ -42,8 +47,7 @@ class PoolTest(object):
     @staticmethod
     def do_network_work(args) -> None:
         network_resource, *_ = args
-        Session = network_resource
-        with Session() as s:
+        with network_resource() as s:
             adapter = HTTPAdapter(max_retries=3)
             s.mount('http://', adapter)
             s.get('http://localhost:8080/')

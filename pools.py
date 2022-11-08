@@ -15,8 +15,7 @@ from os.path import basename
 import utils
 from pools.eventlet import EventletPool
 from pools.gevent import GeventPool
-from pools.multiprocessing import MultiprocessingProcessPool, \
-                                  MultiprocessingThreadPool
+from pools.multiprocessing import MultiprocessingProcessPool, MultiprocessingThreadPool
 from pools.standard_library import StandardProcessPool, StandardThreadPool
 
 
