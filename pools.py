@@ -14,13 +14,14 @@ from os.path import basename
 
 import utils
 from pools.eventlet import EventletPool
+from pools.fastthreadpool import FastThreadPool
 from pools.gevent import GeventPool
 from pools.multiprocessing import MultiprocessingProcessPool, MultiprocessingThreadPool
 from pools.standard_library import StandardProcessPool, StandardThreadPool
 
 
 def run_test(work_type: FunctionType, job_sets: Sequence, trials: int,
-             pool_class: type, worker_count: int) -> Mapping:
+             pool_class: type, worker_count: int) -> list[Mapping]:
     pool = pool_class(worker_count)
     if work_type == 'compute':
         test_func = pool.run_compute_test
@@ -117,6 +118,7 @@ if __name__ == '__main__':
         logger.addHandler(file_handler)
 
     pool_types = [
+        (FastThreadPool, args.concurrent_threads),
         (EventletPool, args.concurrent_threads),
         (GeventPool, args.concurrent_threads),
         (MultiprocessingProcessPool, args.concurrent_processes),

@@ -11,6 +11,7 @@ app = Flask(__name__)
 def ok():
     return "OK"
 
+
 if __name__ == "__main__":
     gunicorn_app = StandaloneApplication(app, options={
         'bind': '127.0.0.1:8080',

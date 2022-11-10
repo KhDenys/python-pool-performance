@@ -1,3 +1,5 @@
+cython
+fastthreadpool
 flask
 gunicorn
 gevent
