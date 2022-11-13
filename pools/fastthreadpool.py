@@ -9,7 +9,7 @@ class FastThreadPool(PoolTest):
 
     def map(self, work_func, inputs):
         self.pool.map(work_func, inputs, unpack_args=False)
-        # self.pool.shutdown()
+        self.pool.shutdown()
         return self.pool.done
 
     def destroy_pool(self):

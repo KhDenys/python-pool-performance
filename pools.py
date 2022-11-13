@@ -118,12 +118,12 @@ if __name__ == '__main__':
         logger.addHandler(file_handler)
 
     pool_types = [
-        (FastThreadPool, args.concurrent_threads),
         (EventletPool, args.concurrent_threads),
         (GeventPool, args.concurrent_threads),
-        (MultiprocessingProcessPool, args.concurrent_processes),
+        (FastThreadPool, args.concurrent_threads),
+        # (MultiprocessingProcessPool, args.concurrent_processes),
         (MultiprocessingThreadPool, args.concurrent_threads),
-        (StandardProcessPool, args.concurrent_processes),
+        # (StandardProcessPool, args.concurrent_processes),
         (StandardThreadPool, args.concurrent_threads),
     ]
 
