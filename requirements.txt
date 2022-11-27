@@ -4,6 +4,7 @@ flask
 gunicorn
 gevent
 eventlet
+joblib
 tabulate
 numpy
 matplotlib

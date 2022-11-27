@@ -16,6 +16,7 @@ import utils
 from pools.eventlet import EventletPool
 from pools.fastthreadpool import FastThreadPool
 from pools.gevent import GeventPool
+from pools.joblib_thread_pool import JoblibThreadPool
 from pools.multiprocessing import MultiprocessingProcessPool, MultiprocessingThreadPool
 from pools.standard_library import StandardProcessPool, StandardThreadPool
 
@@ -121,6 +122,7 @@ if __name__ == '__main__':
         (EventletPool, args.concurrent_threads),
         (GeventPool, args.concurrent_threads),
         (FastThreadPool, args.concurrent_threads),
+        (JoblibThreadPool, args.concurrent_threads),
         (MultiprocessingThreadPool, args.concurrent_threads),
         (StandardThreadPool, args.concurrent_threads),
     ]
