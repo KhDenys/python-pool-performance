@@ -13,7 +13,6 @@ import sys
 from os.path import basename
 
 import utils
-from pools.eventlet import EventletPool
 from pools.fastthreadpool import FastThreadPool
 from pools.gevent import GeventPool
 from pools.joblib_thread_pool import JoblibThreadPool
@@ -123,7 +122,6 @@ if __name__ == '__main__':
         (JoblibThreadPool, args.concurrent_threads),
         (MultiprocessingThreadPool, args.concurrent_threads),
         (StandardThreadPool, args.concurrent_threads),
-        (EventletPool, args.concurrent_threads),
         (GeventPool, args.concurrent_threads),
     ]
 
