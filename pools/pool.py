@@ -17,7 +17,6 @@ class PoolTest(object):
     def __init__(self, worker_count: int):
         self.worker_count = worker_count
         self.pool = self.init_pool(worker_count)
-        self.compute_resource = self.init_compute_resource()
         self.network_resource = self.init_network_resource()
 
     def init_pool(self, worker_count: int) -> object:
@@ -31,18 +30,8 @@ class PoolTest(object):
         raise NotImplementedError("{} does not implement map"
                                   .format(self.__class__.__name__))
 
-    def init_compute_resource(self) -> object:
-        from cmath import sqrt
-        return sqrt
-
     def init_network_resource(self) -> object:
         return S
-
-    @staticmethod
-    def do_compute_work(args) -> None:
-        compute_resource, num, *_ = args
-        sqrt = compute_resource
-        sqrt(sqrt(sqrt(num)))
 
     @staticmethod
     def do_network_work(args) -> None:
@@ -51,11 +40,6 @@ class PoolTest(object):
             adapter = HTTPAdapter(max_retries=3)
             s.mount('http://', adapter)
             s.get('http://localhost:8080/')
-
-    def run_compute_test(self, jobs: int, trials: int,
-                         show_progress: bool=False) -> Mapping:
-        return self._run_test(self.do_compute_work, self.compute_resource,
-                              jobs, trials, show_progress=show_progress)
 
     def run_network_test(self, jobs: int, trials: int,
                          show_progress: bool=False) -> Mapping:

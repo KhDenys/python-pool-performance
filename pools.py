@@ -2,7 +2,6 @@
 
 from collections.abc import Mapping, Sequence
 from collections import OrderedDict
-from types import FunctionType
 import logging
 from tabulate import tabulate
 from tqdm import tqdm
@@ -19,15 +18,10 @@ from pools.mp import MultiprocessingThreadPool
 from pools.standard_library import StandardThreadPool
 
 
-def run_test(work_type: FunctionType, job_sets: Sequence, trials: int,
+def run_test(job_sets: Sequence, trials: int,
              pool_class: type, worker_count: int) -> list[Mapping]:
     pool = pool_class(worker_count)
-    if work_type == 'compute':
-        test_func = pool.run_compute_test
-    elif work_type == 'network':
-        test_func = pool.run_network_test
-    else:
-        raise Exception("Invalid work type: {}".format(work_type))
+    test_func = pool.run_network_test
     results = map(
         lambda jobs: test_func(jobs, trials, show_progress=True),
         tqdm(job_sets, desc=pool_class.__name__),
@@ -55,9 +49,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument('--work-type', '-w', default='compute',
-                        choices=['compute', 'network'],
-                        help='The kind of work to perform in each pool')
+
     parser.add_argument('--max-work', '-m', type=int, default=4,
                         help='The power of 2 for number of jobs to execute. '
                              'For example, a choice of 4 will yield a maximum '
@@ -69,14 +61,9 @@ if __name__ == '__main__':
                         help='The total number of samples to compute. '
                              'For example, 4 samples with max-work of 4 will '
                              'run each pool with 4, 8, 12, and then 16 jobs.')
-    parser.add_argument('--concurrent-threads', '-t', type=int, default=50,
+    parser.add_argument('--concurrent-threads', '-t', type=int, default=5,
                         help='The number of concurrent threads to use in '
                              'each thread pool.')
-    parser.add_argument('--concurrent-processes', '-p', type=int,
-                        default=multiprocessing.cpu_count() * 2 + 1,
-                        help='The number of concurrent processes to use in '
-                             'each process pool. The default is (number of'
-                             'processors * 2) + 1.')
     parser.add_argument('--no-graph', action='store_true', default=False,
                         help='Disable showing the graph of the results at the '
                              'end of execution.')
@@ -147,7 +134,6 @@ if __name__ == '__main__':
         ## Test configuration:
 
         * Maximum work:         2^{max_work} = {jobs} jobs
-        * Concurrent processes: {concurrent_processes}
         * Concurrent threads:   {concurrent_threads}
         * Number of samples:    {samples}
         * Trials:               {trials}
@@ -165,7 +151,6 @@ if __name__ == '__main__':
     all_results = list(tqdm(
         map(
             lambda pool_class_tuple: run_test(
-                args.work_type,
                 job_sets,
                 trials,
                 *pool_class_tuple
