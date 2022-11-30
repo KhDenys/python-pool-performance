@@ -14,7 +14,6 @@ from os.path import basename
 
 import utils
 from pools.fastthreadpool import FastThreadPool
-from pools.gevent import GeventPool
 from pools.joblib_thread_pool import JoblibThreadPool
 from pools.mp import MultiprocessingThreadPool
 from pools.standard_library import StandardThreadPool
@@ -122,7 +121,6 @@ if __name__ == '__main__':
         (JoblibThreadPool, args.concurrent_threads),
         (MultiprocessingThreadPool, args.concurrent_threads),
         (StandardThreadPool, args.concurrent_threads),
-        (GeventPool, args.concurrent_threads),
     ]
 
     max_jobs = 2 ** args.max_work
