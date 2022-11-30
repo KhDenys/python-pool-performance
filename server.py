@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 import multiprocessing
+import time
 
 from gunicorn_server import StandaloneApplication
-from flask import Flask
+from falcon import App
 
 
-app = Flask(__name__)
+app = App()
 
 
-@app.route("/")
-def ok():
-    return "OK"
+class Resource:
+
+    def on_get(self, req, resp):
+        time.sleep(0.2)
+        resp.text = 'Ok'
+
+
+app.add_route('/', Resource())
 
 
 if __name__ == "__main__":

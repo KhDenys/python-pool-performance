@@ -1,6 +1,6 @@
 cython
 fastthreadpool
-flask
+falcon
 gunicorn
 gevent
 eventlet
